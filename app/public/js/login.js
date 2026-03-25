@@ -29,7 +29,7 @@ document.getElementById('login-form').addEventListener('submit', async (envoyer)
 	const messageDiv=document.getElementById('login-message').value;
 
 	// envoyer les données au serveur = à authController coté back
-	const response = await fetch('/api/auth/login', {
+	const res = await fetch('/api/auth/login', {
 		method: 'POST',
 		// header contient les en-tete http a envoyer avec la requete
 		// application/json type mime qui veut dire que les données sont encodée
@@ -37,9 +37,9 @@ document.getElementById('login-form').addEventListener('submit', async (envoyer)
 		body: JSON.stringify({email, password})
 	});
 
-const data = await response.json();
+const data = await res.json();
 
-if (response.ok){
+if (res.ok){
 	messageDiv.textContent='Connexion reussie';
 	messageDiv.className='Message validation';
 	messageDiv.style.display='block';
