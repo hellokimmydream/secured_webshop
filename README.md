@@ -76,3 +76,6 @@ L'application démarre sur **http://localhost:8080**
 | alice@webshop.com | password1 | user |
 
 > ⚠️ Les mots de passe sont stockés en clair — c'est volontaire pour le démarrage du projet.
+
+## bycrypt dans le cmd à la racine
+npm install bcrypt
