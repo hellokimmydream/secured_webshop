@@ -1,9 +1,15 @@
+// reçoit les données envoyées par le frontend et vérifie les identifiants en BDD
+
 const db = require('../config/db');
+// bibliothèque de hachage de mdp
+const bcrypt = require('bcrypt');
 
 module.exports = {
 
     // ----------------------------------------------------------
     // POST /api/auth/login
+    // ici recoit email et pwd
+    // repond avec message, user ou erreur
     // ----------------------------------------------------------
     login: (req, res) => {
         const { email, password } = req.body;
@@ -22,8 +28,9 @@ module.exports = {
             if (results.length === 0) {
                 return res.status(401).json({ error: 'Email ou mot de passe incorrect' });
             }
-
-            res.json({ message: 'Connexion réussie', user: results[0] });
+            // pour ne jamais envoyer le mdp au client
+            const {password: _pwd, ...safeUser} = user;
+            res.json({ message: 'Connexion réussie', user: safeUser });
         });
     },
 
