@@ -44,7 +44,7 @@ if (response.ok){
 	messageDiv.className='Message validation';
 	messageDiv.style.display='block';
 	// settimeout execute code après un délai donnée
-	// windows.location est une propriété qui contient url actuelle et peut redirigé vers un url donné
+	// windows.location est une propriété qui contient url actuelle et peut redirigé vers un URL donné
 	setTimeout(() => window.location.href = '/', 1500);
 }
 else {
