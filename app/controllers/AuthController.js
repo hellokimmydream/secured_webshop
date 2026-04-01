@@ -3,10 +3,12 @@
 const db = require('../config/db');
 // bibliothèque de hachage de mdp
 const bcrypt = require('bcrypt');
+// Implémentation du JWT
+const Jwt = require('jsonwebtoken');
 
 // ajoute le sel
-const SaltRounds = 12;
-const Pepper = process.env.PEPPER;
+const SALT_ROUNDS = 12;
+const PEPPER = process.env.PEPPER;
 
 
 module.exports = {
@@ -32,7 +34,7 @@ module.exports = {
         }
 
         // limiter la longueur des champs pour prévenir les injection 
-        if (username.length > 30 || password.length > 128) {
+        if (email.length > 30 || password.length > 128) {
             return res.status(400).json({ error: 'Saisie trop longue' });
         }
 
@@ -50,13 +52,20 @@ module.exports = {
             const user = results[0];
 
             // compare le mdp entré avec le hash stocké dans la db
-            const isValid = await bcrypt.compare(password, user.password)
+            const isValid = await bcrypt.compare(password, PEPPER, user.password)
             if (!isValid) {
                 return res.status(401).json({error: 'Erreur lors de la connexion'})
             }
+
+            const token = Jwt.sign(
+                    { id: user.id, email: user.name, role: user.role},
+                    process.env.JWT_SECRET,
+                    { expiresIn: '24h'}
+            )
+
             // pour ne jamais envoyer le mdp au client
-            const {password: _pwd, ...safeUser} = user;
-            res.json({ message: 'Connexion réussie', user: safeUser });
+            const { password: _pwd, ...safeUser } = user;
+            res.json({ message: 'Connexion réussie', token, user: safeUser });
         });
     },
 
