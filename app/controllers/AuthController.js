@@ -22,6 +22,7 @@ module.exports = {
         }
 
         // il faut rechercher l utilisateur par email uniquemant
+        // db.query recoit le callback async
         db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
             if (err) {
                 return res.status(500).json({ error: 'erreur serveur' });
@@ -47,7 +48,8 @@ module.exports = {
     // ----------------------------------------------------------
     // POST /api/auth/register
     // ----------------------------------------------------------
-    register: (_req, res) => {
+    register:  async (_req, res) =>
+    {
         const {username, email, password} = req.body;
 
         if(!username || !email || !password){
