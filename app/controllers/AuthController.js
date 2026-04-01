@@ -5,7 +5,9 @@ const db = require('../config/db');
 const bcrypt = require('bcrypt');
 
 // ajoute le sel
-const SALT_ROUNDS = 12;
+const SaltRounds = 12;
+const Pepper = process.env.PEPPER;
+
 
 module.exports = {
 
@@ -15,10 +17,23 @@ module.exports = {
     // repond avec message, user ou erreur
     // ----------------------------------------------------------
     login: (req, res) => {
-        const { email, password } = req.body;
+        const email= req.body.email?.trim().toLowerCase();
+        const password=req.body.password;
 
         if (!email || !password) {
             return res.status(400).json({ error: 'Email et mot de passe requis' });
+        }
+
+        // Validation coté back
+        // vérifier que l'email a bien un format valide
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ error: 'Email invalide' });
+        }
+
+        // limiter la longueur des champs pour prévenir les injection 
+        if (username.length > 30 || password.length > 128) {
+            return res.status(400).json({ error: 'Saisie trop longue' });
         }
 
         // il faut rechercher l utilisateur par email uniquemant
@@ -50,15 +65,31 @@ module.exports = {
     // ----------------------------------------------------------
     register:  async (req, res) =>
     {
-        const {username, email, password} = req.body;
+        const username= req.body.username?.trim();
+        const email= req.body.email?.trim().toLowerCase();
+        const password = req.body.password;
 
-        if(!username || !email || !password){
+        if (!username || !email || !password) {
             return res.status(400).json({ error: 'Tous les champs sont requis' });
         }
 
+        // Validations AVANT le try/catch
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ error: 'Email invalide' });
+        }
+
+        if (username.length > 30 || password.length > 128) {
+            return res.status(400).json({ error: 'Saisie trop longue' });
+        }
+
+        const usernameRegex = /^[a-zA-Z0-9]+$/;
+        if (!usernameRegex.test(username)) {
+            return res.status(400).json({ error: 'Nom d\'utilisateur invalide' });
+        }
+
         try {
-            // On hashe le mot de passe avant de l'insérer en BDD
-            const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+            const hashedPassword = await bcrypt.hash(password + PEPPER, SALT_ROUNDS);
 
             db.query(
                 'INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)',

@@ -40,7 +40,7 @@
                 <form id="address-form">
                     <div class="form-group">
                         <label for="address">Adresse</label>
-                        <input type="text" id="address" name="address" placeholder="Votre adresse complète">
+                        <input type="text" id="address" name="address" placeholder="Votre adresse complète" required minlength="3" required maxlength="256">
                     </div>
                     <button type="submit">Mettre à jour l'adresse</button>
                 </form>
@@ -51,7 +51,7 @@
                 <form id="photo-form">
                     <div class="form-group">
                         <label for="photo">Photo de profil</label>
-                        <input type="file" id="photo" name="photo" accept="image/*">
+                        <input type="file" id="photo" name="photo" accept="image/*" required type="image">
                     </div>
                     <button type="submit">Envoyer la photo</button>
                 </form>
