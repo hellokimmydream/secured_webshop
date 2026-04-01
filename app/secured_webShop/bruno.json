@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "secured_webShop",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

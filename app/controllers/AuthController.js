@@ -48,7 +48,7 @@ module.exports = {
     // ----------------------------------------------------------
     // POST /api/auth/register
     // ----------------------------------------------------------
-    register:  async (_req, res) =>
+    register:  async (req, res) =>
     {
         const {username, email, password} = req.body;
 
