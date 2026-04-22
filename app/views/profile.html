@@ -19,12 +19,12 @@
         <div class="container">
             <div class="profile-card">
 
-                <!-- Photo de profil -->
+                <!-- Photo de profil remplacée dynamiquement si une photo existe en bd -->
                 <div id="photo-container">
                     <div class="profile-photo-placeholder" id="photo-placeholder">👤</div>
                 </div>
 
-                <!-- Informations de base -->
+                <!-- Info de base remplies par loadProfile -->
                 <div id="user-info">
                     <div class="info-row"><strong>Nom :</strong> <span id="username">...</span></div>
                     <div class="info-row"><strong>Email :</strong> <span id="email">...</span></div>
@@ -33,25 +33,25 @@
 
                 <hr>
 
-                <!-- Message de statut -->
+                <!-- message de statut affiché après une action -->
                 <div class="message" id="status-message"></div>
 
-                <!-- Formulaire de mise à jour de l'adresse -->
+                <!-- Formulaire de MAJ de l adresse -->
                 <form id="address-form">
                     <div class="form-group">
                         <label for="address">Adresse</label>
-                        <input type="text" id="address" name="address" placeholder="Votre adresse complète" required minlength="3" required maxlength="256">
+                        <input type="text" id="address" name="address" placeholder="Votre adresse complète" required minlength="3" maxlength="256">
                     </div>
                     <button type="submit">Mettre à jour l'adresse</button>
                 </form>
 
                 <hr>
 
-                <!-- Formulaire d'upload de photo -->
+                <!-- form upload de photo -->
                 <form id="photo-form">
                     <div class="form-group">
                         <label for="photo">Photo de profil</label>
-                        <input type="file" id="photo" name="photo" accept="image/*" required type="image">
+                        <input type="file" id="photo" name="photo" accept="image/*" required>
                     </div>
                     <button type="submit">Envoyer la photo</button>
                 </form>
@@ -68,31 +68,52 @@
 
     <script src="/js/nav.js"></script>
     <script>
+    // DOMContentLoaded pour que tous les éléments HTML existent avant d exécuter le JS
+    document.addEventListener('DOMContentLoaded', () => {
+
         // ------------------------------------------------------------------
         // Chargement du profil au démarrage
+        // récupère les données de l'utilisateur connecté via le token JWT
         // ------------------------------------------------------------------
         async function loadProfile() {
-            const res = await fetch('/api/profile');
-            if (!res.ok) return;
+            const token = localStorage.getItem('token');
+
+            const res = await fetch('/api/profile', {
+                // envoie le token dans le header pour que le middleware auth identifie l'utilisateur
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+
+            // si le token est invalide ou absent redirige vers login
+            if (!res.ok) {
+                window.location.href = '/login';
+                return;
+            }
+
+            // convertit la réponse JSON en objet JavaScript utilisable
             const user = await res.json();
 
+            // affiche les données de l'utilisateur dans les éléments HTML
             document.getElementById('username').textContent = user.username;
             document.getElementById('email').textContent    = user.email;
             document.getElementById('role').textContent     = user.role;
 
+            // pré-remplit le champ adresse avec la valeur actuelle en BDD
             document.getElementById('address').value = user.address || '';
 
+            // affiche la photo de profil si elle existe, sinon garde le placeholder 👤
             const photoContainer = document.getElementById('photo-container');
             if (user.photo_path) {
                 photoContainer.innerHTML = `<img class="profile-photo" src="${user.photo_path}" alt="Photo de profil">`;
             }
 
+            // ajoute l'adresse dans le bloc d'informations
             const infoDiv = document.getElementById('user-info');
             infoDiv.innerHTML += `<div class="info-row"><strong>Adresse :</strong> ${user.address || ''}</div>`;
         }
 
         // ------------------------------------------------------------------
         // Mise à jour de l'adresse
+        // envoie la nouvelle adresse au serveur via POST /api/profile
         // ------------------------------------------------------------------
         document.getElementById('address-form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -100,41 +121,63 @@
 
             const res = await fetch('/api/profile', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    // indique au serveur que le body est du JSON
+                    'Content-Type': 'application/json',
+                    // token nécessaire car la route est protégée par le middleware auth
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                },
                 body: JSON.stringify({ address })
             });
 
             const data = await res.json();
+            // affiche un message de succès ou d'erreur selon la réponse
             showMessage(res.ok ? 'success' : 'error', data.message || data.error);
+            // recharge le profil pour afficher la nouvelle adresse
             if (res.ok) loadProfile();
         });
 
         // ------------------------------------------------------------------
-        // Upload de la photo
+        // Upload de la photo de profil
+        // utilise FormData car on envoie un fichier binaire, pas du JSON
         // ------------------------------------------------------------------
         document.getElementById('photo-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const file = document.getElementById('photo').files[0];
             if (!file) return showMessage('error', 'Aucun fichier sélectionné');
 
+            // FormData permet d'envoyer des fichiers dans une requête HTTP
             const formData = new FormData();
             formData.append('photo', file);
 
-            const res = await fetch('/api/profile/photo', { method: 'POST', body: formData });
+            const res = await fetch('/api/profile/photo', {
+                method: 'POST',
+                body: formData,
+                // pas de Content-Type ici : le navigateur le définit automatiquement avec le boundary multipart
+                headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+            });
+
             const data = await res.json();
             showMessage(res.ok ? 'success' : 'error', data.message || data.error);
+            // recharge le profil pour afficher la nouvelle photo
             if (res.ok) loadProfile();
         });
 
+        // ------------------------------------------------------------------
+        // Affiche un message temporaire de succès ou d'erreur
+        // ------------------------------------------------------------------
         function showMessage(type, text) {
             const el = document.getElementById('status-message');
             el.textContent = text;
             el.className = 'message ' + type;
             el.style.display = 'block';
+            // setTimeout exécute le code après un délai donné (ici 4000ms = 4s)
             setTimeout(() => { el.style.display = 'none'; }, 4000);
         }
 
+        // charge le profil dès que la page est prête
         loadProfile();
+    });
     </script>
 </body>
 </html>
