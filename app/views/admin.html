@@ -46,7 +46,12 @@
 
     <script src="/js/nav.js"></script>
     <script>
-        fetch('/api/admin/users')
+        // le fetch utilise le token
+        fetch('/api/admin/users', {
+            headers : {
+                'Authorization': 'Bearer' + localStorage.getItem('token')
+            }
+        })
             .then(r => r.json())
             .then(users => {
                 const tbody = document.getElementById('user-table-body');

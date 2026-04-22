@@ -52,13 +52,14 @@ module.exports = {
             const user = results[0];
 
             // compare le mdp entré avec le hash stocké dans la db
-            const isValid = await bcrypt.compare(password, PEPPER, user.password)
+            // concatainé le mdp et pepper
+            const isValid = await bcrypt.compare(password + PEPPER, user.password)
             if (!isValid) {
                 return res.status(401).json({error: 'Erreur lors de la connexion'})
             }
 
             const token = Jwt.sign(
-                    { id: user.id, email: user.name, role: user.role},
+                    { id: user.id, email: user.email, role: user.role},
                     process.env.JWT_SECRET,
                     { expiresIn: '24h'}
             )
