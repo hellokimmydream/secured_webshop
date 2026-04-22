@@ -49,7 +49,7 @@
         // le fetch utilise le token
         fetch('/api/admin/users', {
             headers : {
-                'Authorization': 'Bearer' + localStorage.getItem('token')
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         })
             .then(r => r.json())

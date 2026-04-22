@@ -34,7 +34,7 @@ module.exports = {
         }
 
         // limiter la longueur des champs pour prévenir les injection 
-        if (email.length > 30 || password.length > 128) {
+        if (email.length > 254 || password.length > 254) {
             return res.status(400).json({ error: 'Saisie trop longue' });
         }
 
@@ -58,10 +58,11 @@ module.exports = {
                 return res.status(401).json({error: 'Erreur lors de la connexion'})
             }
 
+            // tache 8, ajouter rôle
             const token = Jwt.sign(
-                    { id: user.id, email: user.email, role: user.role},
+                { id: user.id, email: user.email, role: user.role, username: user.username },
                     process.env.JWT_SECRET,
-                    { expiresIn: '24h'}
+                { expiresIn: '24h' }
             )
 
             // pour ne jamais envoyer le mdp au client
