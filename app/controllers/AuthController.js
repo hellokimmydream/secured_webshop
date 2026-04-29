@@ -99,6 +99,14 @@ module.exports = {
             return res.status(400).json({ error: 'Nom d\'utilisateur invalide' });
         }
 
+        // pour un mot de passe fort
+        const mdpRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+        if (!mdpRegex.test(password)){
+            return res.status(400).json({
+                error: 'Le mot de passe doit avoir au moins 8 caractères,une majuscule, une minuscule, un chiffre et un caractère spécial pour être validé'
+            });
+        }
+
         try {
             const hashedPassword = await bcrypt.hash(password + PEPPER, SALT_ROUNDS);
 
