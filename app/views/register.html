@@ -15,7 +15,7 @@
                 <h1>Inscription</h1>
 
                 <div class="container">
-                    <form action="/register" method="POST">
+                    <form id="register-form">
                         <div class="form-group mb-3">
                             <label>Nom</label>
                             <input type="text" class="form-control" placeholder="Entrez votre nom" name="firstName">
@@ -24,17 +24,19 @@
                             <label>Prénom</label>
                             <input type="text" class="form-control" placeholder="Entrez votre prénom" name="lastName">
                         </div>
+                        <!-- validation des champs avec required avec attributs html pour limiter les risque d'injection sql -->
+                        <!-- pattern : permet de définir une expression régulière pour valider le contenu -->
                         <div class="form-group mb-3">
                             <label>Nom d'utilisateur</label>
-                            <input type="text" class="form-control" placeholder="Entrez un nom d'utilisateur" name="userName">
+                            <input type="text" class="form-control" placeholder="Entrez un nom d'utilisateur" name="userName" required minlength="3" required maxlength="30"  required pattern="[a-zA-Z0-9]+">
                         </div>
                         <div class="form-group mb-3">
                             <label>Email</label>
-                            <input type="text" class="form-control" placeholder="Adresse email" name="email">
+                            <input type="email" class="form-control" placeholder="Adresse email" name="email" required maxlength="254">
                         </div>
                         <div class="form-group mb-3">
                             <label>Mot de passe</label>
-                            <input type="password" class="form-control" placeholder="Entrer mot de passe" name="password">
+                            <input type="password" class="form-control" placeholder="Entrer mot de passe" name="password" required minlength="8" required maxlength="128">
                         </div>
                         <div class="d-grid mt-3">
                         <button type="submit" class="btn btn-primary form-control">Envoyer</button>
@@ -53,5 +55,6 @@
     </footer>
 
     <script src="/js/nav.js"></script>
+    <script src="/js/register.js"></script>
 </body>
 </html>

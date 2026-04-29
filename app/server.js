@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config();
 
 const express = require("express");
 const path = require("path");
@@ -35,10 +35,10 @@ app.use("/user", userRoute);
 app.get("/login",    (_req, res) => res.sendFile(path.join(__dirname, "views", "login.html")));
 app.get("/register", (_req, res) => res.sendFile(path.join(__dirname, "views", "register.html")));
 app.get("/profile",  (_req, res) => res.sendFile(path.join(__dirname, "views", "profile.html")));
-app.get("/admin",    (_req, res) => res.sendFile(path.join(__dirname, "views", "admin.html")));
+app.get("/admin", (_req, res) => res.sendFile(path.join(__dirname, "views", "admin.html")));
 
 // Démarrage du serveur
 app.get("/test",      (_req, res) => res.send("db admin: root, pwd : root"));
-app.listen(8080, () => {
-    console.log("Serveur démarré sur http://localhost:8080");
+app.listen(3000, () => {
+    console.log("Serveur démarré sur http://localhost:3000");
 });

@@ -26,20 +26,22 @@ document.getElementById('login-form').addEventListener('submit', async (envoyer)
 	envoyer.preventDefault();
 	const email = document.getElementById('email').value;
 	const password=document.getElementById('password').value;
-	const messageDiv=document.getElementById('login-message').value;
+	const messageDiv=document.getElementById('login-message');
 
 	// envoyer les données au serveur = à authController coté back
 	const res = await fetch('/api/auth/login', {
 		method: 'POST',
 		// header contient les en-tete http a envoyer avec la requete
 		// application/json type mime qui veut dire que les données sont encodée
-		header: { 'Content-Type': 'application/json'},
+		headers: { 'Content-Type': 'application/json'},
 		body: JSON.stringify({email, password})
 	});
 
 const data = await res.json();
 
 if (res.ok){
+	// sauvegarde le token
+	localStorage.setItem('token', data.token);
 	messageDiv.textContent='Connexion reussie';
 	messageDiv.className='Message validation';
 	messageDiv.style.display='block';
