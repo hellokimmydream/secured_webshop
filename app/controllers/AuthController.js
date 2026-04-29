@@ -116,6 +116,7 @@ module.exports = {
                 }
             );
         } catch (err) {
+            console.error(['register'], err.message);
             res.status(500).json({ error: 'Erreur serveur' });
         }
     }
