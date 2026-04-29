@@ -1,4 +1,22 @@
 require('dotenv').config();
+import express from 'express';
+import {rateLimit} from 'express-rate-limit';
+
+// pour limiter les tentative de login, contre le brut-force
+const rateLimit = require('express-rate-limit');
+
+const loginLimiter = rateLimit({
+    // fenêtre de 15min
+    windowMs: 15*60*1000,
+    // max 5 tentatives par IP dans cette fenêtre
+    limit: 5,
+    // message quand limite est dépassée
+    message: { error: 'Trop de tentatives de connexion, réessayez dans 15 minutes'},
+    // applique limite sur les requêtes échouées
+    standardHeaders: 'draft-8',
+    legacyHeaders: false,
+    ipv6Subnet: 56,
+});
 
 const express = require("express");
 const path = require("path");
