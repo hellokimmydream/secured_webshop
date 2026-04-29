@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require("express");
 const path = require("path");
+const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
@@ -9,12 +10,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Fichiers statiques (CSS, images, uploads...)
+// Fichiers statiques :CSS, images, uploads...
 app.use(express.static(path.join(__dirname, "public")));
 
-// ---------------------------------------------------------------
-// Routes API (retournent du JSON)
-// ---------------------------------------------------------------
+// Routes API retournent du JSON
 const authRoute    = require("./routes/Auth");
 const profileRoute = require("./routes/Profile");
 const adminRoute   = require("./routes/Admin");
@@ -23,9 +22,7 @@ app.use("/api/auth",    authRoute);
 app.use("/api/profile", profileRoute);
 app.use("/api/admin",   adminRoute);
 
-// ---------------------------------------------------------------
-// Routes pages (retournent du HTML)
-// ---------------------------------------------------------------
+// Routes pages retournent du HTML
 const homeRoute = require("./routes/Home");
 const userRoute = require("./routes/User");
 
@@ -39,6 +36,10 @@ app.get("/admin", (_req, res) => res.sendFile(path.join(__dirname, "views", "adm
 
 // Démarrage du serveur
 app.get("/test",      (_req, res) => res.send("db admin: root, pwd : root"));
+
+// pour le middleware qui gere les exeptions
+app.use(errorHandler);
+
 app.listen(3000, () => {
     console.log("Serveur démarré sur http://localhost:3000");
 });

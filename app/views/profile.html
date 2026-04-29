@@ -71,10 +71,8 @@
     // DOMContentLoaded pour que tous les éléments HTML existent avant d exécuter le JS
     document.addEventListener('DOMContentLoaded', () => {
 
-        // ------------------------------------------------------------------
         // Chargement du profil au démarrage
         // récupère les données de l'utilisateur connecté via le token JWT
-        // ------------------------------------------------------------------
         async function loadProfile() {
             const token = localStorage.getItem('token');
 
@@ -111,10 +109,8 @@
             infoDiv.innerHTML += `<div class="info-row"><strong>Adresse :</strong> ${user.address || ''}</div>`;
         }
 
-        // ------------------------------------------------------------------
-        // Mise à jour de l'adresse
+        // MAJ de l'adresse
         // envoie la nouvelle adresse au serveur via POST /api/profile
-        // ------------------------------------------------------------------
         document.getElementById('address-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const address = document.getElementById('address').value;
@@ -137,10 +133,8 @@
             if (res.ok) loadProfile();
         });
 
-        // ------------------------------------------------------------------
         // Upload de la photo de profil
-        // utilise FormData car on envoie un fichier binaire, pas du JSON
-        // ------------------------------------------------------------------
+        // utilise FormData car on envoie un fichier binaire et pas JSON
         document.getElementById('photo-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const file = document.getElementById('photo').files[0];
@@ -163,15 +157,13 @@
             if (res.ok) loadProfile();
         });
 
-        // ------------------------------------------------------------------
         // Affiche un message temporaire de succès ou d'erreur
-        // ------------------------------------------------------------------
         function showMessage(type, text) {
             const el = document.getElementById('status-message');
             el.textContent = text;
             el.className = 'message ' + type;
             el.style.display = 'block';
-            // setTimeout exécute le code après un délai donné (ici 4000ms = 4s)
+            // setTimeout exécute le code après un délai donné 4000ms = 4s
             setTimeout(() => { el.style.display = 'none'; }, 4000);
         }
 
