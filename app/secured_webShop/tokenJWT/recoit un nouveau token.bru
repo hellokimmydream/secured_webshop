@@ -6,10 +6,17 @@ meta {
 
 post {
   url: http://localhost:3000/api/auth/refresh
-  body: none
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoidGVzdEB0ZXN0LmNoIiwicm9sZSI6InVzZXIiLCJ1c2VybmFtZSI6InRlc3R1c2VyIiwiaWF0IjoxNzc4MDU4MjI0LCJleHAiOjE3Nzg2NjMwMjR9.WCC2n15vKnm6znLkCcodgBGwcelNfYnixbxs93oMen8"
+  }
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

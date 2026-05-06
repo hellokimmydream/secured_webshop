@@ -2,6 +2,7 @@ const express    = require('express');
 const router     = express.Router();
 const controller = require('../controllers/AuthController');
 const rateLimit  = require('express-rate-limit');
+const Jwt = require('jsonwebtoken');
 
 // mis en place du rate limite 
 // ex.15
@@ -16,6 +17,7 @@ const loginLimiter = rateLimit({
 router.post('/login', loginLimiter, controller.login);
 router.post('/register', controller.register);
 
+// exercice11 refresh token avec if
 router.post('/refresh', (req, res) => {
     const { refreshToken} = req.body;
     if (!refreshToken) return res.status(401).json( {error: 'Token absent'});
@@ -26,7 +28,8 @@ router.post('/refresh', (req, res) => {
             { id: payload.id },
             process.env.JWT_SECRET,
             { expiresIn: '15m'}
-        )
+        );
+        res.json({ token : newAccessToken});
     } catch (err) {
         res.status(403).json( {error: 'Refresh Token non valide ou expiré'});
     }

@@ -81,7 +81,7 @@ module.exports = {
             // pour ne jamais envoyer le mdp au client
             // utilisation des tokens
             const { password: _pwd, ...safeUser } = user;
-            res.json({ message: 'Connexion réussie', token: accessToken, refreshToken, user: safeUser });
+            res.json({ message: 'Connexion réussie', token, refreshToken, user: safeUser });
         });
     },
 
