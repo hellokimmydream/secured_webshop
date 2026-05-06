@@ -43,7 +43,8 @@ module.exports = {
     // POST /api/profile/photo
     // ----------------------------------------------------------
     uploadPhoto: (req, res) => {
-        const userId = req.auth.userId; // TODO exercice 5 : remplacer par req.user.id
+        // ex.5 : remplacer par req.user.id
+        const userId = req.auth.userId;
 
         if (!req.file) {
             return res.status(400).json({ error: 'Aucun fichier reçu' });

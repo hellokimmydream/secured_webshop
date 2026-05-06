@@ -2,7 +2,8 @@ require('dotenv').config();
 import express from 'express';
 import {rateLimit} from 'express-rate-limit';
 
-// pour limiter les tentative de login, contre le brut-force
+// ex.15
+//pour limiter les tentative de login, contre le brut-force
 const rateLimit = require('express-rate-limit');
 
 const loginLimiter = rateLimit({
