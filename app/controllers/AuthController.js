@@ -59,15 +59,29 @@ module.exports = {
             }
 
             // tache 8, ajouter rôle
+            // ex. 7 et 11 sur les token JWT
             const token = Jwt.sign(
                 { id: user.id, email: user.email, role: user.role, username: user.username },
+                // clé pour le token mise dans .env
                     process.env.JWT_SECRET,
-                { expiresIn: '24h' }
+                    // mis a 15minutes pour utiliser le refesh token, avant définit à 24h
+                { expiresIn: '15m' }
+            )
+
+            // ex.11 implémenter un refresh token
+            // connexion longue durée
+            const refreshToken = Jwt.sign(                
+                { id: user.id, email: user.email, role: user.role, username: user.username },
+                // clé pour le token refresh mise dans .env
+                    process.env.JWT_REFRESH_SECRET,
+                    // mis a 15minutes pour utiliser le refesh token, avant définit à 24h
+                { expiresIn: '7d' }
             )
 
             // pour ne jamais envoyer le mdp au client
+            // utilisation des tokens
             const { password: _pwd, ...safeUser } = user;
-            res.json({ message: 'Connexion réussie', token, user: safeUser });
+            res.json({ message: 'Connexion réussie', token: accessToken, refreshToken, user: safeUser });
         });
     },
 

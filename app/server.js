@@ -1,6 +1,7 @@
 require('dotenv').config();
-import express from 'express';
-import {rateLimit} from 'express-rate-limit';
+// pas d import puisque j utilise require dans le code
+//import express from 'express';
+//import {rateLimit} from 'express-rate-limit';
 
 // ex.15
 //pour limiter les tentative de login, contre le brut-force
@@ -36,6 +37,10 @@ app.use(express.static(path.join(__dirname, "public")));
 const authRoute    = require("./routes/Auth");
 const profileRoute = require("./routes/Profile");
 const adminRoute   = require("./routes/Admin");
+
+// pour appliquer le rateLimit sur la route login
+// route ne sert plus a rien, est dans auth.js
+//app.use("/api/login", loginLimiter);
 
 app.use("/api/auth",    authRoute);
 app.use("/api/profile", profileRoute);

@@ -42,6 +42,8 @@ const data = await res.json();
 if (res.ok){
 	// sauvegarde le token
 	localStorage.setItem('token', data.token);
+	// tache 11 pour refresh token
+	localStorage.setItem('refreshToken', data.refreshToken);
 	messageDiv.textContent='Connexion reussie';
 	messageDiv.className='Message validation';
 	messageDiv.style.display='block';
@@ -50,7 +52,7 @@ if (res.ok){
 	setTimeout(() => window.location.href = '/', 1500);
 }
 else {
-	messageDiv.textContent='Erreur lors de la connexion';
+	messageDiv.textContent= data.error || 'Erreur lors de la connexion';
 	messageDiv.className='Message erreur';
 	messageDiv.style.display='block';
 }

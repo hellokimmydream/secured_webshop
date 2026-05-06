@@ -1,0 +1,23 @@
+meta {
+  name: récupère toket et refresh token
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/api/auth/login
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "alice@webshop.com",
+    "password": "password1"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
