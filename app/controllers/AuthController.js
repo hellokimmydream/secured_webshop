@@ -10,6 +10,13 @@ const Jwt = require('jsonwebtoken');
 const SALT_ROUNDS = 12;
 const PEPPER = process.env.PEPPER;
 
+// tache 16 pour limiter les tentative de connexion
+// map est une structure de données qui stocke des paires clé-valeur, où chaque clé est unique et associée à une valeur.
+const tentativeEchouee = new Map();
+const MAX_TENTATIVE = 5;
+// sur 15 min
+const DUREE_BLOQUAGE_MS = 15 * 60 * 1000;
+
 
 module.exports = {
 
@@ -34,8 +41,21 @@ module.exports = {
         }
 
         // limiter la longueur des champs pour prévenir les injection 
-        if (email.length > 254 || password.length > 254) {
+        if (email.length > 180 || password.length > 180) {
             return res.status(400).json({ error: 'Saisie trop longue' });
+        }
+
+        // TACHE 16
+        // verif si le compte est bloqué ou non
+        const infoCompte = tentativeEchouee.get(email);
+        if (infoCompte && infoCompte.blocJusqua > Date.now()) {
+            // 60000 ms = 1 min, arrondit à l'entier supérieur pour afficher le nombre de minutes restantes
+            // ceil pour arrondir à l'entier supérieur
+            const minutesRest = Math.ceil((infoCompte.blocJusqua - Date.now()) / 60000);
+            // 429 c est le code pour "Too Many Requests", utilisé pour indiquer que l'utilisateur a dépassé une limite de taux
+            return res.status(429).json({
+                error: `Compte temporairement bloqué. Reessayez dans ${minutesRest} minutes.`
+            });
         }
 
         // il faut rechercher l utilisateur par email uniquemant
@@ -55,8 +75,19 @@ module.exports = {
             // concatainé le mdp et pepper
             const isValid = await bcrypt.compare(password + PEPPER, user.password)
             if (!isValid) {
+                // tache 16 incrémenter le compteur de tentative qui ont ratée
+                const compteur = tentativeEchouee.get(email) || { tentatives: 0, blocJusqua: 0 };
+                compteur.tentatives += 1;
+                if (compteur.tentatives >= MAX_TENTATIVE) {
+                    compteur.blocJusqua = Date.now() + DUREE_BLOQUAGE_MS;
+                    // remet a 0 pour le prochain cycle de tentative
+                    compteur.tentatives = 0;
+                }
+                tentativeEchouee.set(email, compteur);
                 return res.status(401).json({error: 'Erreur lors de la connexion'})
             }
+            // tache 16connexion réussie et remet le compteur à zéro
+            tentativeEchouee.delete(email);
 
             // tache 8, ajouter rôle
             // ex. 7 et 11 sur les token JWT
