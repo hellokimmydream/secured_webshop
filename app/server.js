@@ -46,6 +46,10 @@ app.use("/api/auth",    authRoute);
 app.use("/api/profile", profileRoute);
 app.use("/api/admin",   adminRoute);
 
+// route de test non utilisée mais afficher ce qu il y a dans userController pour vérifier que les routes fonctionnent
+// const userRoute = require("./routes/User");
+// app.use("/user", userRoute);
+
 // Routes pages retournent du HTML
 const homeRoute = require("./routes/Home");
 const userRoute = require("./routes/User");

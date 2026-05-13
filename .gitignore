@@ -1,10 +1,16 @@
-/app/node_modules/
-/secured_webshop.iml
-/.idea/
+# Dépendances npm
+node_modules/
 
-# Photos uploadées par les utilisateurs (conservées localement, pas en git)
-/app/public/uploads/*.jpg
-/app/public/uploads/*.jpeg
-/app/public/uploads/*.png
-/app/public/uploads/*.gif
-/app/public/uploads/*.webp
+# Variables d'environnement contient les secrets PEPPER, JWT_SECRET, mdp BDD)
+app/.env
+
+# Fichiers IDE
+.vscode/
+.idea/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
