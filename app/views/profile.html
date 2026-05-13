@@ -21,7 +21,7 @@
 
                 <!-- Photo de profil remplacée dynamiquement si une photo existe en bd -->
                 <div id="photo-container">
-                    <div class="profile-photo-placeholder" id="photo-placeholder">👤</div>
+                    <div class="profile-photo-placeholder" id="photo-placeholder">🦋</div>
                 </div>
 
                 <!-- Info de base remplies par loadProfile -->
@@ -29,6 +29,8 @@
                     <div class="info-row"><strong>Nom :</strong> <span id="username">...</span></div>
                     <div class="info-row"><strong>Email :</strong> <span id="email">...</span></div>
                     <div class="info-row"><strong>Rôle :</strong> <span id="role">...</span></div>
+                    <!-- adresse ajouté  pour le profil-->
+                    <div class="info-row"><strong>Adresse :</strong> <span id="user-address">...</span></div>
                 </div>
 
                 <hr>
@@ -98,15 +100,15 @@
             // pré-remplit le champ adresse avec la valeur actuelle en BDD
             document.getElementById('address').value = user.address || '';
 
-            // affiche la photo de profil si elle existe, sinon garde le placeholder 👤
+            // affiche la photo de profil si elle existe sinon garde le placeholder 🦋
             const photoContainer = document.getElementById('photo-container');
             if (user.photo_path) {
                 photoContainer.innerHTML = `<img class="profile-photo" src="${user.photo_path}" alt="Photo de profil">`;
             }
 
             // ajoute l'adresse dans le bloc d'informations
-            const infoDiv = document.getElementById('user-info');
-            infoDiv.innerHTML += `<div class="info-row"><strong>Adresse :</strong> ${user.address || ''}</div>`;
+            // met à jour l'adresse dans le bloc d'informations
+            document.getElementById('user-address').textContent = user.address || '';
         }
 
         // MAJ de l'adresse

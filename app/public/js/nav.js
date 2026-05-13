@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ${token ? `
                         <a href="/profile">Profil</a>
                         ${isAdmin ? '<a href="/admin">Admin</a>' : ''}
-                        <span class="nav-user">👤 ${username}</span>
+                        <span class="nav-user">🦋 ${username}</span>
                         <a href="#" id="logout-btn">Déconnexion</a>
                     ` : `
                         <a href="/login">Connexion</a>
