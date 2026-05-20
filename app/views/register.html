@@ -35,8 +35,13 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Mot de passe</label>
-                            <input type="password" class="form-control" placeholder="Entrer mot de passe" name="password" required minlength="8" maxlength="128">
-                            <!-- pour un mdp fort -->
+                            <input type="password" class="form-control"
+                                placeholder="Entrer mot de passe"
+                                name="password"
+                                required minlength="8" maxlength="128"
+                                title="Le mot de passe doit contenir au moins 8 caractères"
+                                oninvalid="this.setCustomValidity('Le mot de passe doit contenir au moins 8 caractères')"
+                                oninput="this.setCustomValidity('')">                            <!-- pour un mdp fort -->
                             <div id="password-strength" style="margin-top: 5px;"></div>
                         </div>
                         <div class="d-grid mt-3">
