@@ -79,3 +79,11 @@ L'application démarre sur **http://localhost:8080**
 
 ## bycrypt dans le cmd à la racine
 npm install bcrypt
+
+## .env
+Prendre le .env.exemple le copier et le coller en .env. lui ajouter les bonnes valeurs.
+
+On peut générer une valeur aléatoire en faisant :
+``bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+``
