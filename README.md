@@ -87,3 +87,11 @@ On peut générer une valeur aléatoire en faisant :
 ``bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ``
+
+## Installer les dépendance et générer un hash
+dans le terminal a l'interieur du dossier app, lancer
+``bash
+npm install dotenv bcrypt
+``
+
+Puis : `` bash node generate-hash.js ``
