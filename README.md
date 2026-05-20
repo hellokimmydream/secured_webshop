@@ -89,7 +89,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ``
 
 ## Installer les dépendance et générer un hash
-dans le terminal a l'interieur du dossier app, lancer
+dans le terminal a la racine du projet, lancer :
 ``bash
 npm install dotenv bcrypt
 ``
