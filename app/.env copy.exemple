@@ -1,0 +1,11 @@
+# Copier fichier en .env et remplacer les valeurs
+DB_HOST=localhost
+DB_PORT=6033
+DB_USER=db_user
+DB_PASS=db_password
+DB_NAME=webshop
+
+# la commande est a copier coller dans le terminal pour générer des valeurs aléatoires pour les secrets
+PEPPER=node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+JWT_SECRET=node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+JWT_REFRESH_SECRET=node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
