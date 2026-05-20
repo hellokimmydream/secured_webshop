@@ -1,25 +1,4 @@
 require('dotenv').config();
-// pas d import puisque j utilise require dans le code
-//import express from 'express';
-//import {rateLimit} from 'express-rate-limit';
-
-// ex.15
-//pour limiter les tentative de login, contre le brut-force
-const rateLimit = require('express-rate-limit');
-
-const loginLimiter = rateLimit({
-    // fenêtre de 15min
-    windowMs: 15*60*1000,
-    // max 5 tentatives par IP dans cette fenêtre
-    limit: 5,
-    // message quand limite est dépassée
-    message: { error: 'Trop de tentatives de connexion, réessayez dans 15 minutes'},
-    // applique limite sur les requêtes échouées
-    standardHeaders: 'draft-8',
-    legacyHeaders: false,
-    ipv6Subnet: 56,
-});
-
 const express = require("express");
 const path = require("path");
 const errorHandler = require('./middleware/errorHandler');
@@ -38,17 +17,9 @@ const authRoute    = require("./routes/Auth");
 const profileRoute = require("./routes/Profile");
 const adminRoute   = require("./routes/Admin");
 
-// pour appliquer le rateLimit sur la route login
-// route ne sert plus a rien, est dans auth.js
-//app.use("/api/login", loginLimiter);
-
 app.use("/api/auth",    authRoute);
 app.use("/api/profile", profileRoute);
 app.use("/api/admin",   adminRoute);
-
-// route de test non utilisée mais afficher ce qu il y a dans userController pour vérifier que les routes fonctionnent
-// const userRoute = require("./routes/User");
-// app.use("/user", userRoute);
 
 // Routes pages retournent du HTML
 const homeRoute = require("./routes/Home");

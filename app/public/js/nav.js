@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
             localStorage.removeItem('token');
+            // supprimer le refreshToken aussi pour éviter les problèmes de sécurité
+            localStorage.removeItem('refreshToken');
             window.location.href = '/login';
         });
     }

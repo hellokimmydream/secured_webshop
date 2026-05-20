@@ -53,18 +53,44 @@
             }
         })
             .then(r => r.json())
+            // mise en place d'une protection xss injection
             .then(users => {
-                const tbody = document.getElementById('user-table-body');
-                tbody.innerHTML = users.map(u => `
-                    <tr>
-                        <td>${u.id}</td>
-                        <td>${u.username}</td>
-                        <td>${u.email}</td>
-                        <td><span class="badge-${u.role}">${u.role}</span></td>
-                        <td>${u.address || '-'}</td>
-                    </tr>
-                `).join('');
-            })
+    const tbody = document.getElementById('user-table-body');
+    // on vide le tableau
+    tbody.innerHTML = '';
+
+    // pour chaque utilisateur on crée une ligne avec createElement
+    // textContent echappe automatiquement le HTML donc pas de XSS possible
+    users.forEach(u => {
+        const tr = document.createElement('tr');
+
+        const tdId = document.createElement('td');
+        tdId.textContent = u.id;
+
+        const tdNom = document.createElement('td');
+        tdNom.textContent = u.username;
+
+        const tdEmail = document.createElement('td');
+        tdEmail.textContent = u.email;
+
+        const tdRole = document.createElement('td');
+        const spanRole = document.createElement('span');
+        spanRole.className = 'badge-' + u.role;
+        spanRole.textContent = u.role;
+        tdRole.appendChild(spanRole);
+
+        const tdAdresse = document.createElement('td');
+        tdAdresse.textContent = u.address || '-';
+
+        tr.appendChild(tdId);
+        tr.appendChild(tdNom);
+        tr.appendChild(tdEmail);
+        tr.appendChild(tdRole);
+        tr.appendChild(tdAdresse);
+
+        tbody.appendChild(tr);
+    });
+})
             .catch(() => {
                 document.getElementById('user-table-body').innerHTML =
                     '<tr><td colspan="5">Erreur lors du chargement</td></tr>';

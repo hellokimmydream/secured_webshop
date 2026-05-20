@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // envoi du formulaire d'inscription
-    document.getElementById('register-form').addEventListener('submit', async function() {
+    // correction avec des event pour éviter le comportement par défaut du formulaire qui recharge la page car sans c est trop fragile même si ça marche la plupart du temps
+    document.getElementById('register-form').addEventListener('submit', async function(event) {
         event.preventDefault();
 
         const username = document.querySelector('[name="userName"]').value;

@@ -16,27 +16,26 @@
 
                 <div class="container">
                     <form id="register-form">
-                        <div class="form-group mb-3">
+<!--                         <div class="form-group mb-3">
                             <label>Nom</label>
                             <input type="text" class="form-control" placeholder="Entrez votre nom" name="firstName">
                         </div>
                         <div class="form-group mb-3">
                             <label>Prénom</label>
                             <input type="text" class="form-control" placeholder="Entrez votre prénom" name="lastName">
-                        </div>
+                        </div> -->
                         <!-- validation des champs avec required avec attributs html pour limiter les risque d'injection sql -->
                         <!-- pattern : permet de définir une expression régulière pour valider le contenu -->
                         <div class="form-group mb-3">
                             <label>Nom d'utilisateur</label>
-                            <input type="text" class="form-control" placeholder="Entrez un nom d'utilisateur" name="userName" required minlength="3" required maxlength="30"  required pattern="[a-zA-Z0-9]+">
-                        </div>
+                            <input type="text" class="form-control" placeholder="Entrez un nom d'utilisateur" name="userName" required minlength="3" maxlength="30" pattern="[a-zA-Z0-9]+">                        </div>
                         <div class="form-group mb-3">
                             <label>Email</label>
                             <input type="email" class="form-control" placeholder="Adresse email" name="email" required maxlength="254">
                         </div>
                         <div class="form-group mb-3">
                             <label>Mot de passe</label>
-                            <input type="password" class="form-control" placeholder="Entrer mot de passe" name="password" required minlength="8" required maxlength="128">
+                            <input type="password" class="form-control" placeholder="Entrer mot de passe" name="password" required minlength="8" maxlength="128">
                             <!-- pour un mdp fort -->
                             <div id="password-strength" style="margin-top: 5px;"></div>
                         </div>
