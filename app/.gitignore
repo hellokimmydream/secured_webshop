@@ -2,7 +2,7 @@
 node_modules/
 
 # Variables d'environnement contient les secrets PEPPER, JWT_SECRET, mdp BDD)
-.env
+app/.env
 
 # Fichiers IDE
 .vscode/
