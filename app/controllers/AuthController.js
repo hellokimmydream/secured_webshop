@@ -105,7 +105,7 @@ module.exports = {
                 { id: user.id, email: user.email, role: user.role, username: user.username },
                 // clé pour le token refresh mise dans .env
                     process.env.JWT_REFRESH_SECRET,
-                    // mis a 15minutes pour utiliser le refesh token, avant définit à 24h
+                    // mis a 7jours pour le refresh token qui prend le relai du token d'accès après son expiration de 15 minutes
                 { expiresIn: '7d' }
             )
 
