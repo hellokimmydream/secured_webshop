@@ -71,7 +71,7 @@ module.exports = {
 
             const user = results[0];
 
-            // compare le mdp entré avec le hash stocké dans la db
+            // bcrypt.compare : compare le mdp entré avec le hash stocké dans la db
             // concatainé le mdp et pepper
             const isValid = await bcrypt.compare(password + PEPPER, user.password)
             if (!isValid) {
